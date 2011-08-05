@@ -236,3 +236,5 @@ EOF
   end
 
 end
+
+ActiveSupport::TestCase.send(:include, ActsAsSoftDeleteByFieldAssertions)

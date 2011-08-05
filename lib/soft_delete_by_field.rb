@@ -1,6 +1,5 @@
 module ActiveRecord #:nodoc:
   module Acts #:nodoc:
-
     module SoftDeleteByField
       DEFAULT_FIELD_NAME = :deleted_at
 

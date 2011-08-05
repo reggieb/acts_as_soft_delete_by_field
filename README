@@ -18,6 +18,12 @@ The model object needs to have a datetime field, that on
 delete will be set to the current time. By default, this field should
 be :deleted_at, but you can also specify your own field.
 
+Installation
+------------
+Add this to your Gemfile:
+
+  gem "acts_as_soft_delete_by_field"
+
 Usage
 -----
 
@@ -99,7 +105,7 @@ Testing
 A number of custom assertions are made available when this plugin is installed.
 They are held in the module ActsAsSoftDeleteByFieldAssertions. In particular,
 assert_soft_delete_working_for works through each of the assertions and can
-be used as a test the soft deletion is working correctly on any model where
+be used as a test that soft deletion is working correctly on any model where
 it is used.
 
    class ThingTest < ActiveSupport::TestCase
