@@ -90,8 +90,25 @@ Overwrite these methods in the model to use them. For example:
     end
   end
 
-Now, when a thing is soft deleted, "Thing soft deleted" will printed to the
+Now, when a thing is soft deleted, "Thing soft deleted" will printed be to the
 console.
+
+Testing
+-------
+
+A number of custom assertions are made available when this plugin is installed.
+They are held in the module ActsAsSoftDeleteByFieldAssertions. In particular,
+assert_soft_delete_working_for works through each of the assertions and can
+be used as a test the soft deletion is working correctly on any model where
+it is used.
+
+   class ThingTest < ActiveSupport::TestCase
+
+     def test_soft_delete
+       assert_soft_delete_working_for(Thing.first)
+     end
+
+   end
 
 Copyright (c) 2011 Rob Nichols, released under the MIT license
 

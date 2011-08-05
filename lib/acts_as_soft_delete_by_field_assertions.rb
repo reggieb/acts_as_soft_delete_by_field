@@ -1,9 +1,6 @@
 # Provides assertion methods that make it easier to test soft deletion functionality
-# In particular, if:
 #
-#   class Thing < SoftDeletableBase end;
-#
-# the soft delete functionality can be tested via:
+# The soft delete functionality can be tested via:
 #
 #   class ThingTest < ActiveSupport::TestCase
 #
