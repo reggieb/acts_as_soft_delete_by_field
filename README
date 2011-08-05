@@ -1,13 +1,97 @@
-ActsAsSoftDelete
-================
+Soft Delete By Field
+===================
 
-Introduction goes here.
+Provides mechanism for soft delete functionality. Soft delete means that on
+delete, an object is flagged as deleted rather than being removed from the
+database. This makes it far easier to recover objects that have
+been deleted by mistake.
+
+This soft delete mechanism uses a field in a models table, to flag and
+record the date of deletion.
+
+Requirements
+------------
+This plugin is designed for Rails 3. The syntax of the scope options
+will not work with Rails 2.
+
+The model object needs to have a datetime field, that on
+delete will be set to the current time. By default, this field should
+be :deleted_at, but you can also specify your own field.
+
+Usage
+-----
+
+  class Thing < ActiveRecord::Base
+
+    acts_as_soft_delete_by_field
+
+  end
+
+If you wish to use a field other than :deleted_at, for example :soft_deleted_at,
+you can do this via the acts_as_soft_delete_by_field declaration:
+
+  class Thing < ActiveRecord::Base
+
+    acts_as_soft_delete_by_field(:soft_deleted_at)
+
+  end
+
+Functionality
+-------------
+Adds 'extant' and 'deleted' scopes to the model. For example, if added
+to a Thing model, would allow you to do the following:
+
+     thing.soft_delete   ---- Soft deletes an instance of thing
+
+     Thing.extant        ---- Finds all things that are not deleted
+     Thing.deleted.count ---- Counts how many things have been deleted
+
+     Thing.extant.find(
+       :all,
+       :conditions => ["colour = ?", 'red']
+     )                   ---- Finds all extant things that have colour set as red
+
+     Thing.extant.where(:colour => 'red')      ---- As above using where
 
 
-Example
-=======
+Also if Box has_many things
 
-Example goes here.
+     box.things.deleted ---- Finds all the deleted things in the box
 
+Note that Thing's delete instance method is not effected by this functionality
+so:
 
-Copyright (c) 2011 [name of plugin creator], released under the MIT license
+    thing.soft_delete  --- alters the thing instance to be flagged as deleted
+    thing.delete       --- deletes the thing from the database.
+
+If you want delete actions to soft_delete, overwrite delete:
+
+  class Thing
+
+    acts_as_soft_delete_by_field
+
+    def delete
+      soft_delete
+    end
+
+  end
+
+Callbacks
+---------
+
+There are also two callback methods: before_soft_delete and after_soft_delete
+Overwrite these methods in the model to use them. For example:
+
+  class Thing
+    acts_as_soft_delete_by_field
+
+    def after_soft_delete
+      puts "Thing soft deleted"
+    end
+  end
+
+Now, when a thing is soft deleted, "Thing soft deleted" will printed to the
+console.
+
+Copyright (c) 2011 Rob Nichols, released under the MIT license
+
