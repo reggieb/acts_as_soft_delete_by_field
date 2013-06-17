@@ -10,16 +10,23 @@ module ActiveRecord #:nodoc:
       module ClassMethods
 
         def soft_delete_by_field_name
-          @soft_delete_by_field_name
+          @soft_delete_by_field_name || DEFAULT_FIELD_NAME
         end
 
-        def acts_as_soft_delete_by_field(field_name = nil)
-          attr_accessor :reasons_not_to_delete
-          field_name ||= DEFAULT_FIELD_NAME
+        def soft_delete_by_field_name=(field_name)
           @soft_delete_by_field_name = field_name.to_sym
+        end
+
+        def acts_as_soft_delete_by_field(field_name = DEFAULT_FIELD_NAME)
+          attr_accessor :reasons_not_to_delete
+          self.soft_delete_by_field_name = field_name
           send :include, SoftDeleteByField::InstanceMethods
-          scope :extant, where(["#{(self.class.name.tableize + ".") if self.class.kind_of?(SoftDeleteByField)}#{field_name} IS NULL"])
-          scope :deleted, where(["#{(self.class.name.tableize + ".") if self.class.kind_of?(SoftDeleteByField)}#{field_name} IS NOT NULL"])
+          scope :extant, where(arel_table[soft_delete_by_field_name].eq(nil))
+          scope :deleted, where(arel_table[soft_delete_by_field_name].not_eq(nil))
+        end
+
+        def soft_delete_class_table_name
+          (self.class.name.tableize + ".") if self.class.kind_of?(SoftDeleteByField)
         end
   
       end
