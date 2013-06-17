@@ -9,14 +9,14 @@ module ActiveRecord #:nodoc:
 
       module ClassMethods
 
-        def soft_delete_by_field_name
-          @soft_delete_by_field_name
-        end
-
         def acts_as_soft_delete_by_field(field_name = nil)
           attr_accessor :reasons_not_to_delete
           field_name ||= DEFAULT_FIELD_NAME
-          @soft_delete_by_field_name = field_name.to_sym
+          instance_eval %Q{
+            def soft_delete_by_field_name
+              #{field_name.inspect}
+            end
+          }
           send :include, SoftDeleteByField::InstanceMethods
           scope :extant, where(["#{(self.class.name.tableize + ".") if self.class.kind_of?(SoftDeleteByField)}#{field_name} IS NULL"])
           scope :deleted, where(["#{(self.class.name.tableize + ".") if self.class.kind_of?(SoftDeleteByField)}#{field_name} IS NOT NULL"])
