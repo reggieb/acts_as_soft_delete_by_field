@@ -10,7 +10,7 @@ module ActiveRecord #:nodoc:
       module ClassMethods
 
         def soft_delete_by_field_name
-          @soft_delete_by_field_name || DEFAULT_FIELD_NAME
+          @soft_delete_by_field_name || parents_soft_delete_by_field_name || DEFAULT_FIELD_NAME
         end
 
         def soft_delete_by_field_name=(field_name)
@@ -27,6 +27,10 @@ module ActiveRecord #:nodoc:
 
         def soft_delete_class_table_name
           (self.class.name.tableize + ".") if self.class.kind_of?(SoftDeleteByField)
+        end
+
+        def parents_soft_delete_by_field_name
+          self.superclass.soft_delete_by_field_name if self.superclass.respond_to? :soft_delete_by_field_name
         end
   
       end

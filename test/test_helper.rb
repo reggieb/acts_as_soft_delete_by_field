@@ -7,4 +7,4 @@ ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database =>  "te
 
 require_relative '../lib/acts_as_soft_delete_by_field'
 
-MiniTest::Unit.after_tests { Thing.delete_all}
+MiniTest::Unit.after_tests { Thing.delete_all; OtherThing.delete_all; InheritingThing.delete_all}
