@@ -4,7 +4,6 @@ Gem::Specification.new do |s|
   s.name = "acts_as_soft_delete_by_field"
   s.version = '1.0.2'
   s.authors = ['Rob Nichols']
-  s.date = %q{2011-08-5}
   s.summary = "Provides soft deletion for ActiveRecord models"
   s.description = "Acts as Soft Delete by Field: #{s.summary} using a field to flag the datetime of deletion"
   s.email = 'rob@nicholshayes.co.uk'
@@ -18,4 +17,6 @@ Gem::Specification.new do |s|
   s.homepage = %q{https://github.com/reggieb/acts_as_soft_delete_by_field}
   s.require_paths = ["lib"]
   s.add_runtime_dependency 'activerecord', '>= 3.0.0'
+  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'standalone_migrations', '>= 2.1.1'
 end

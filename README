@@ -111,7 +111,7 @@ it is used.
    class ThingTest < ActiveSupport::TestCase
 
      def test_soft_delete
-       assert_soft_delete_working_for(Thing.first)
+       assert_soft_delete_by_field_working_for(Thing.first)
      end
 
    end

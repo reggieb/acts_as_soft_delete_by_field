@@ -13,6 +13,7 @@
 module ActsAsSoftDeleteByFieldAssertions
 
   def assert_soft_delete_by_field_working_for(item)
+    assert_soft_delete_enabled_for_class(item)
     # Using clones, as otherwise other assertions affected
     @starting_number = item.class.count
     assert_before_soft_delete_all_correct_for(item)
@@ -27,6 +28,13 @@ module ActsAsSoftDeleteByFieldAssertions
     assert_deletion_prevented_if_reasons_not_to_delete_detected(item)
     assert_before_soft_delete(item.clone)
     assert_after_soft_delete(item.clone)
+  end
+
+  def assert_soft_delete_enabled_for_class(item)
+    assert(
+      item.class.ancestors.include?(ActiveRecord::Acts::SoftDeleteByField::InstanceMethods),
+      "#{item.class} should have acts_as_soft_delete_by_field defined"
+    )
   end
   
   def assert_soft_deleted(item)
@@ -237,4 +245,5 @@ EOF
 
 end
 
+require 'active_support'
 ActiveSupport::TestCase.send(:include, ActsAsSoftDeleteByFieldAssertions)
