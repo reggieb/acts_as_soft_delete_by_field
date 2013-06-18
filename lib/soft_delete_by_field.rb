@@ -30,7 +30,7 @@ module ActiveRecord #:nodoc:
         end
 
         def parents_soft_delete_by_field_name
-          self.superclass.soft_delete_by_field_name if self.superclass.respond_to? :soft_delete_by_field_name
+          superclass.soft_delete_by_field_name if superclass.respond_to? :soft_delete_by_field_name
         end
   
       end
