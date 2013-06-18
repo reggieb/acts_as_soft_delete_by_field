@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = "acts_as_soft_delete_by_field"
-  s.version = '1.0.2'
+  s.version = '1.0.3'
   s.authors = ['Rob Nichols']
   s.summary = "Provides soft deletion for ActiveRecord models"
   s.description = "Acts as Soft Delete by Field: #{s.summary} using a field to flag the datetime of deletion"
